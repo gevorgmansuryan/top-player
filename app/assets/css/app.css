@@ -1,0 +1,55 @@
+* {
+	outline: none !important;
+}
+
+html {
+	border: 1px solid white;
+	position: relative;
+	height: 100%;
+	width: 100%;
+}
+
+.header {
+	margin: 15px;
+}
+
+.header img {
+	height: 40px;
+	margin-right: 65px;
+}
+
+.dragable {
+	-webkit-user-select: none;
+	-webkit-app-region: drag;
+}
+
+.overlay {
+	position: fixed;
+	z-index: 1000;
+	width: 100%;
+	height: 100%;
+	display: table;
+	color: white;
+}
+
+.overlay .unlock {
+	display: table-cell;
+	vertical-align: middle;
+	text-align: center;
+}
+
+.overlay .unlock .icon {
+	display: none;
+	height: 100px;
+	width: 100px;
+	border-radius: 50%;
+	background-color: rgba(255,255,255, .3);
+	line-height: 100px;
+	color: black;
+	font-size: 50px;
+	cursor: move;
+}
+
+.overlay .unlock .icon:hover, .overlay .unlock.display .icon {
+	display: inline-block;
+}

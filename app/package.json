@@ -1,0 +1,24 @@
+{
+  "name": "TopPlayer",
+  "author": "Gevorg Mansuryan",
+  "description": "Gevorg Mansuryan",
+  "email": "cto@aod.am",
+  "version": "1.0.0",
+  "main": "main.jsx",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "babel": "latest",
+    "babel-preset-es2015": "latest",
+    "babel-preset-react": "latest",
+    "babel-register": "^6.22.0",
+    "classnames": "^2.2.5",
+    "fs": "latest",
+    "path": "latest",
+    "react": "latest",
+    "react-addons-css-transition-group": "^15.3.2",
+    "react-dom": "latest",
+    "underscore": "^1.8.3"
+  }
+}
