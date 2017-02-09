@@ -32,6 +32,7 @@ class ReactApp extends React.Component {
 		let tray = remote.getGlobal('tray');
 		let contextMenu = Menu.buildFromTemplate([
 			{label: 'Lock', type: 'checkbox', enabled: !!this.state.player, checked: this.state.locked, click: this.__lock.bind(this)},
+			{label: 'Interactive', type: 'checkbox', enabled: !!this.state.player, checked: this.state.locked, click: this.__lock.bind(this)},
 			{type: 'separator'},
 			{label: 'Exit', role: 'quit'},
 		]);
@@ -41,6 +42,13 @@ class ReactApp extends React.Component {
 
 	componentDidMount() {
 		this.buildMenu();
+
+		let win = remote.getCurrentWindow();
+		win.on('minimize', () => {
+			if (this.state.locked) {
+				win.showInactive();
+			}
+		});
 	}
 
 	__lock() {

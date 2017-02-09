@@ -8,6 +8,7 @@ let mainWindow;
 
 function createWindow () {
   mainWindow = new BrowserWindow({
+		show: false,
 		frame: false,
 		height: parseInt(config.height * config.initialSize) + config.headerHeight,
 		width: parseInt(config.width * config.initialSize),
@@ -20,7 +21,7 @@ function createWindow () {
   });
 
   mainWindow.loadURL(`file://${__dirname}/index.html`);
-  // mainWindow.webContents.openDevTools();
+  mainWindow.webContents.openDevTools();
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
@@ -31,6 +32,10 @@ function createWindow () {
   });
 
 	global.tray = new Tray(path.join(__dirname, 'assets/images/icon.ico'));
+
+	mainWindow.once('ready-to-show', () => {
+		mainWindow.show()
+	})
 }
 
 app.on('ready', createWindow);

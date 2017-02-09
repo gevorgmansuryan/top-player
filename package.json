@@ -4,7 +4,7 @@
   "description": "Gevorg Mansuryan",
   "email": "cto@aod.am",
   "version": "1.0.0",
-  "devDependencies": {
+  "dependencies": {
     "electron": "latest",
     "electron-packager": "^8.2.0",
     "gulp": "latest"
