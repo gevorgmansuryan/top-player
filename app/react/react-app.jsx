@@ -15,24 +15,35 @@ class ReactApp extends React.Component {
 		this.timeOut = null;
 		this.state = {
 			locked: remote.getCurrentWindow().isAlwaysOnTop(),
+			interactive: false,
+			interactivePosition: 0,
 			player: null,
 			size: config.initialSize,
-			mouseIn: false
+			mouseIn: false,
+			display: screen.getAllDisplays()[0].size
 		};
 	}
 
-	componentDidUpdate() {
-		let win = remote.getCurrentWindow();
+	componentDidUpdate(prevProps, prevState) {
+		const win = remote.getCurrentWindow();
 		win.setAlwaysOnTop(this.state.locked);
 		win.setSize(parseInt(config.width * this.state.size), parseInt(config.height * this.state.size + (this.state.locked ? 0 : config.headerHeight)));
+		if (this.state.interactive && this.state.interactivePosition != prevState.interactivePosition) {
+			if (this.state.interactivePosition == 1) {
+				win.setPosition(this.state.display.width - config.interactive.padding - parseInt(config.width * this.state.size), config.interactive.padding, true);
+			}
+			if (this.state.interactivePosition == 2) {
+				win.setPosition(config.interactive.padding, config.interactive.padding, true);
+			}
+		}
 		this.buildMenu();
 	}
 
 	buildMenu() {
 		let tray = remote.getGlobal('tray');
 		let contextMenu = Menu.buildFromTemplate([
-			{label: 'Lock', type: 'checkbox', enabled: !!this.state.player, checked: this.state.locked, click: this.__lock.bind(this)},
-			{label: 'Interactive', type: 'checkbox', enabled: !!this.state.player, checked: this.state.locked, click: this.__lock.bind(this)},
+			{label: 'Lock', type: 'checkbox', enabled: !!this.state.player && !this.state.interactive, checked: this.state.locked, click: this.__lock.bind(this)},
+			{label: 'Interactive', type: 'checkbox', enabled: !!this.state.player, checked: this.state.interactive, click: this.__interactive.bind(this)},
 			{type: 'separator'},
 			{label: 'Exit', role: 'quit'},
 		]);
@@ -42,6 +53,8 @@ class ReactApp extends React.Component {
 
 	componentDidMount() {
 		this.buildMenu();
+
+		console.log(this.state.display);
 
 		let win = remote.getCurrentWindow();
 		win.on('minimize', () => {
@@ -57,6 +70,18 @@ class ReactApp extends React.Component {
 		}
 		this.setState({
 			locked: !this.state.locked
+		})
+	}
+
+	__interactive() {
+		if (!this.state.player) {
+			return;
+		}
+		const interactive = !this.state.interactive;
+		this.setState({
+			interactive: interactive,
+			interactivePosition: interactive ? 1 : 0,
+			locked: interactive,
 		})
 	}
 
@@ -88,6 +113,12 @@ class ReactApp extends React.Component {
 	}
 
 	_listenMouse() {
+		if (this.state.interactive) {
+			this.setState({
+				interactivePosition: this.state.interactivePosition == 1 ? 2 : 1
+			})
+		}
+
 		clearTimeout(this.timeOut);
 		this.setState({
 			mouseIn: true
@@ -168,7 +199,7 @@ class ReactApp extends React.Component {
 	renderOverlay() {
 		return (
 			<div className="overlay" onDoubleClick={this.__lock.bind(this)} onMouseMove={this._listenMouse.bind(this)}>
-				<div className={classNames('unlock', {display: this.state.mouseIn})}>
+				<div className={classNames('unlock', {display: this.state.mouseIn && !this.state.interactive})}>
 					<a className="icon dragable" href="#" onClick={this.__lock.bind(this)}>
 						<i className="fa fa-arrows" />
 					</a>

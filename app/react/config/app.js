@@ -3,5 +3,8 @@ module.exports = {
 	headerHeight: 70,
 	height: 470,
 	width: 625,
-	initialSize: 0.7
+	initialSize: 0.7,
+	interactive: {
+		padding: 30
+	}
 };
