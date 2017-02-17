@@ -26,14 +26,15 @@ class ReactApp extends React.Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		const win = remote.getCurrentWindow();
+		let yPos = win.getPosition()[1];
 		win.setAlwaysOnTop(this.state.locked);
 		win.setSize(parseInt(config.width * this.state.size), parseInt(config.height * this.state.size + (this.state.locked ? 0 : config.headerHeight)));
 		if (this.state.interactive && this.state.interactivePosition != prevState.interactivePosition) {
 			if (this.state.interactivePosition == 1) {
-				win.setPosition(this.state.display.width - config.interactive.padding - parseInt(config.width * this.state.size), config.interactive.padding, true);
+				win.setPosition(this.state.display.width - config.interactive.padding - parseInt(config.width * this.state.size), yPos, true);
 			}
 			if (this.state.interactivePosition == 2) {
-				win.setPosition(config.interactive.padding, config.interactive.padding, true);
+				win.setPosition(config.interactive.padding, yPos, true);
 			}
 		}
 		this.buildMenu();
