@@ -2,11 +2,15 @@
   "name": "AlwaysOnTop",
   "author": "Gevorg Mansuryan",
   "description": "Gevorg Mansuryan",
-  "email": "cto@aod.am",
-  "version": "1.0.0",
+  "email": "gevorgmansuryan@gmail.com",
+  "version": "1.0.1",
   "dependencies": {
     "electron": "latest",
+    "electron-installer-debian": "^0.5.2",
     "electron-packager": "^8.2.0",
     "gulp": "latest"
+  },
+  "scripts": {
+    "run": "node_modules/.bin/electron ./app"
   }
 }

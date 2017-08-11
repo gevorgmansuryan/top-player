@@ -50,6 +50,7 @@ class ReactApp extends React.Component {
 		]);
 		tray.setToolTip(config.appName);
 		tray.setContextMenu(contextMenu);
+		tray.setTitle('Top Player');
 	}
 
 	componentDidMount() {

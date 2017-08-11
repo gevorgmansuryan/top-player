@@ -1,8 +1,17 @@
-const {electron, BrowserWindow, app, Tray} = require('electron');
+const {electron, BrowserWindow, app, Tray, nativeImage} = require('electron');
 const path = require('path');
 const config = require('./react/config/app.js');
 
-app.commandLine.appendSwitch('ppapi-flash-path', path.join(__dirname, 'pepflashplayer.dll'));
+let pluginName;
+switch (process.platform) {
+    case 'win32':
+        pluginName = 'pepflashplayer.dll';
+        break;
+    case 'linux':
+        pluginName = 'libpepflashplayer.so';
+        break
+}
+app.commandLine.appendSwitch('ppapi-flash-path', path.join(__dirname, pluginName));
 
 let mainWindow;
 
@@ -31,7 +40,7 @@ function createWindow () {
     mainWindow = null
   });
 
-	global.tray = new Tray(path.join(__dirname, 'assets/images/icon.ico'));
+	global.tray = new Tray(nativeImage.createFromPath(path.join(__dirname, 'assets/images/icon.png')));
 
 	mainWindow.once('ready-to-show', () => {
 		mainWindow.show()
