@@ -4,6 +4,9 @@ import WebView from './components/webview'
 import getPlayer from './helpers/Player'
 import config from './config/app'
 import classNames from 'classnames'
+import History from './components/history'
+import _ from 'underscore'
+
 const {Tray, Menu, screen} = remote;
 
 const propTypes = {};
@@ -20,7 +23,8 @@ class ReactApp extends React.Component {
 			player: null,
 			size: config.initialSize,
 			mouseIn: false,
-			display: screen.getAllDisplays()[0].size
+			display: screen.getAllDisplays()[0].size,
+			history: JSON.parse(localStorage.getItem('history')) || []
 		};
 	}
 
@@ -36,6 +40,9 @@ class ReactApp extends React.Component {
 			if (this.state.interactivePosition == 2) {
 				win.setPosition(config.interactive.padding, yPos, true);
 			}
+		}
+		if (!_.isEqual(this.state.history, JSON.parse(localStorage.getItem('history')))) {
+			localStorage.setItem('history', JSON.stringify(this.state.history.slice(0, 10)));
 		}
 		this.buildMenu();
 	}
@@ -133,11 +140,20 @@ class ReactApp extends React.Component {
 		});
 	}
 
+	__setPlayer(player) {
+		this.setState({
+			player: player,
+			history: [{player: player, time: new Date()}].concat(this.state.history)
+		})
+	}
+
 	_search(event) {
 		event.preventDefault();
-		this.setState({
-			player: getPlayer(this.refs.urlInput.value)
-		})
+		const player = getPlayer(this.refs.urlInput.value);
+		if (player) {
+			this.__setPlayer(player)
+		}
+
 	}
 
 	renderHeader() {
@@ -194,6 +210,7 @@ class ReactApp extends React.Component {
 					</span>
 					</div>
 				</form>
+				<History data={this.state.history} onSelect={this.__setPlayer.bind(this)} />
 			</div>
 		)
 	}

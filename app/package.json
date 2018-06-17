@@ -19,6 +19,7 @@
     "react": "latest",
     "react-addons-css-transition-group": "^15.3.2",
     "react-dom": "latest",
+    "moment": "latest",
     "underscore": "^1.8.3"
   },
   "devDependencies": {

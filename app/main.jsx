@@ -40,7 +40,7 @@ function createWindow () {
     mainWindow = null
   });
 
-	global.tray = new Tray(nativeImage.createFromPath(path.join(__dirname, 'assets/images/icon.png')));
+	global.tray = new Tray(nativeImage.createFromPath(path.join(__dirname, 'assets/images/icon.ico')));
 
 	mainWindow.once('ready-to-show', () => {
 		mainWindow.show()

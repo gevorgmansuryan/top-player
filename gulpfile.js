@@ -1,4 +1,4 @@
-var gulp = require('gulp'), packager = require('electron-packager'), debianInstaller = require('electron-installer-debian');
+var gulp = require('gulp'), packager = require('electron-packager');//, debianInstaller = require('electron-installer-debian');
 
 gulp.task('CreateApplication-win-x64', function () {
 	CreateApplication();
